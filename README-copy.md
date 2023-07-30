@@ -1,5 +1,3 @@
-
-
 # 19-Text-Editor
 
 ## License
