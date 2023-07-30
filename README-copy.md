@@ -9,7 +9,8 @@
 &nbsp;
 
 ## Description
-AS A planner at an internet retail company I WANT a back end for my e-commerce website that uses the latest technologies SO THAT my company can compete with other e-commerce companies. WHEN I test API POST, PUT, and DELETE routes in Insomnia THEN I am able to successfully create, update, and delete data in my database.
+You are out in the country somewhere...with NO internet connection. You are a devloper and would like the opportunity of being able to create notes or write important code snippets that come to mind...EVEN if internet is not available. This app enables you to do exatly that. You can then retrieve important inoformation or data you initialized when you are back at the office. This app is for you!
+
 
 &nbsp;
 
