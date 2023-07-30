@@ -19,7 +19,7 @@ export const putDb = async (content) => {
   const store = tx.objectStore('jate');
 
   try {
-    await store.add(content);
+    await store.add(content); // Remove the id property from the content object
     console.log('Content added to the database:', content);
   } catch (error) {
     console.error('Error adding content to the database:', error);
@@ -28,6 +28,7 @@ export const putDb = async (content) => {
   }
 };
 
+
 // TODO: Add logic for a method that gets all the content from the database
 export const getDb = async () => {
   const db = await openDB('jate', 1);
@@ -35,7 +36,8 @@ export const getDb = async () => {
   const store = tx.objectStore('jate');
 
   try {
-    const allContent = await store.getAll();
+    const allContentObjects = await store.getAll(); // Retrieve all objects with id property
+    const allContent = allContentObjects.map((obj) => obj.content); // Extract content from each object
     console.log('All content retrieved from the database:', allContent);
     return allContent;
   } catch (error) {
@@ -45,6 +47,7 @@ export const getDb = async () => {
     await tx.done;
   }
 };
+
 
 // Call the initdb function to ensure the database is initialized.
 initdb();
