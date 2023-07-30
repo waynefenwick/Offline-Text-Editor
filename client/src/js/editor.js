@@ -38,5 +38,6 @@ export default class {
       console.log('The editor has lost focus');
       putDb(localStorage.getItem('content'));
     });
+    
   }
 }
