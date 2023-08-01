@@ -1,7 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = () => {
   return {
@@ -11,7 +12,7 @@ module.exports = () => {
       main: './src/js/index.js',
       install: './src/js/install.js',
       cards: './src/js/header.js',
-      editor: './src/js/editor'
+      editor: './src/js/editor.js', // Corrected the filename
     },
     // Output for our bundles
     output: {
@@ -19,16 +20,16 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      // Webpack plugin that generates our html file and injects our bundles. 
+      // Webpack plugin that generates our html file and injects our bundles.
       new HtmlWebpackPlugin({
         template: './index.html',
-        title: 'Contact Cards'
+        title: 'Contact Cards',
       }),
-     
+
       // Injects our custom service worker
-      new InjectManifest({
+      new WorkboxPlugin.InjectManifest({
         swSrc: './src-sw.js',
-        swDest: 'src-sw.js',
+        swDest: 'sw.js',
       }),
 
       // Creates a manifest.json file.
@@ -40,7 +41,8 @@ module.exports = () => {
         description: 'Never forget your contacts!',
         background_color: '#225ca3',
         theme_color: '#225ca3',
-        start_url: './',
+        start_url: '/',
+        scope: '/',
         publicPath: './',
         icons: [
           {
@@ -50,6 +52,12 @@ module.exports = () => {
           },
         ],
       }),
+
+      // Add MiniCssExtractPlugin to handle CSS files and extract them into separate files.
+      new MiniCssExtractPlugin({
+        filename: '[name].css', // Output CSS filename
+        chunkFilename: '[id].css', // Output CSS filename for dynamically loaded chunks
+      }),
     ],
 
     module: {
@@ -57,7 +65,7 @@ module.exports = () => {
       rules: [
         {
           test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
           test: /\.m?js$/,

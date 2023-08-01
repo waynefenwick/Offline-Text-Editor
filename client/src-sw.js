@@ -27,25 +27,21 @@ warmStrategyCache({
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
 // TODO: Implement asset caching
-// Use CacheFirst strategy for assets
-const assetCache = new CacheFirst({
-  cacheName: 'asset-cache',
-  plugins: [
-    new CacheableResponsePlugin({
-      statuses: [0, 200],
-    }),
-    new ExpirationPlugin({
-      maxAgeSeconds: 7 * 24 * 60 * 60, // Cache assets for 7 days
-    }),
-  ],
-});
-
-// Register a route for caching assets
 registerRoute(
-  ({ request }) =>
-    request.destination === 'style' ||
-    request.destination === 'script' ||
-    request.destination === 'image',
-  assetCache
+  // Define a route to cache assets
+  ({ request }) => request.destination === 'style' || request.destination === 'script' || request.destination === 'image',
+  // Use a CacheFirst strategy for caching assets
+  new CacheFirst({
+    cacheName: 'assets-cache',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache assets for 7 days
+      }),
+    ],
+  })
 );
+
 
