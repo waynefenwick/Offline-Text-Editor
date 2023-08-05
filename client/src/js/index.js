@@ -2,9 +2,9 @@ import { Workbox } from 'workbox-window';
 import Editor from './editor';
 import './database';
 import '../css/style.css';
-import header from './header'; // Import the header variable from the header.js file
+import { header } from './header'; // Change this line
 
-const main = document.querySelector('#main');
+const main = document.querySelector('#header-container');
 main.innerHTML = '';
 
 const loadSpinner = () => {
