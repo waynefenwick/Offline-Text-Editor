@@ -13,9 +13,6 @@ const initdb = async () =>
         // Perform any necessary upgrades when the version is less than 2
         // For example, you can add or modify indexes.
       }
-
-      // You can add more upgrade steps for higher versions if needed.
-
       console.log(`jate database upgraded from version ${oldVersion} to version ${newVersion}`);
     },
   });

@@ -1,3 +1,4 @@
+// header.js
 const header = `
 /*
        _____  ____________
@@ -9,4 +10,7 @@ just another text editor
 */                          
 `;
 
+console.log(header);
+
 export { header };
+

@@ -4,6 +4,12 @@ import { header } from './header';
 
 export default class {
   constructor() {
+    document.addEventListener('DOMContentLoaded', () => {
+      this.initializeEditor();
+    });
+  }
+
+  initializeEditor() {
     const localData = localStorage.getItem('content');
 
     // check if CodeMirror is loaded
