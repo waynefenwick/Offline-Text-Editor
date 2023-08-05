@@ -1,40 +1,44 @@
 import { openDB } from 'idb';
 
 const initdb = async () =>
-  openDB('jate', 1, {
-    upgrade(db) {
-      if (db.objectStoreNames.contains('jate')) {
-        console.log('jate database already exists');
-        return;
+  openDB('jate', 2, { // Update the version number to 2
+    upgrade(db, oldVersion, newVersion, transaction) {
+      if (oldVersion < 1) {
+        // Perform any necessary upgrades when the version is less than 1
+        // For example, you can create object stores or update existing ones.
+        db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
       }
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
-      console.log('jate database created');
+
+      if (oldVersion < 2) {
+        // Perform any necessary upgrades when the version is less than 2
+        // For example, you can add or modify indexes.
+      }
+
+      // You can add more upgrade steps for higher versions if needed.
+
+      console.log(`jate database upgraded from version ${oldVersion} to version ${newVersion}`);
     },
   });
 
-// Add logic to a method that accepts some content and adds it to the database
-export const putDb = async (contentArray) => {
-  const db = await openDB('jate', 1);
-  const tx = db.transaction('jate', 'readwrite');
+export const putDb = async (content) => {
+  console.log('Post to the database');
+  const jateDb = await openDB('jate', 2); // Update the version number to 2
+  const tx = jateDb.transaction('jate', 'readwrite');
   const store = tx.objectStore('jate');
-
-  await store.clear(); // Clear the existing content in the store
-  await store.add(contentArray, 1); // Save the content as an array of strings
-  await tx.complete;
+  const request = store.put({ id: 1, value: content });
+  const result = await request;
+  console.log('🚀 - data saved to the jate database', result);
 };
 
-
-// Add logic for a method that gets all the content from the database
 export const getDb = async () => {
-  const db = await openDB('jate', 1);
-  const tx = db.transaction('jate', 'readonly');
+  console.log('GET all from the database');
+  const jateDb = await openDB('jate', 2); // Update the version number to 2
+  const tx = jateDb.transaction('jate', 'readonly');
   const store = tx.objectStore('jate');
-
-  // Retrieve the content (an array of strings) from IndexedDB
-  const contentArray = await store.get(1);
-
-  return contentArray || []; // Return the array or an empty array if not found
+  const request = store.get(1);
+  const result = await request;
+  console.log('result.value', result);
+  return result;
 };
 
 initdb();
-console.log('Database initialized.');
