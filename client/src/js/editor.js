@@ -4,13 +4,10 @@ import { header } from './header';
 
 export default class {
   constructor() {
-    this.initializeEditor();
-  }
-
-  initializeEditor() {
+    // this.initializeEditor();
     const localData = localStorage.getItem('content');
 
-    // check if CodeMirror is loaded
+    // Check if CodeMirror is loaded
     if (typeof CodeMirror === 'undefined') {
       throw new Error('CodeMirror is not loaded');
     }
@@ -29,7 +26,9 @@ export default class {
     // Fall back to localStorage if nothing is stored in indexeddb, and if neither is available, set the value to header.
     getDb().then((data) => {
       console.info('Loaded data from IndexedDB, injecting into editor');
-      this.editor.setValue(data || localData || header);
+      const initialValue = (data || localData || header);
+      const content = header.trim() + '\n\n' + (initialValue.trim ? initialValue.trim() : '');
+      this.editor.setValue(content);
     });
 
     this.editor.on('change', () => {
@@ -39,7 +38,7 @@ export default class {
     // Save the content of the editor when the editor itself loses focus
     this.editor.on('blur', () => {
       console.log('The editor has lost focus');
-      putDb(localStorage.getItem('content'));
+      putDb(this.editor.getValue());
     });
   }
 }
