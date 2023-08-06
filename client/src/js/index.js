@@ -1,5 +1,7 @@
 import { Workbox } from 'workbox-window';
 import Editor from './editor';
+// import { header } from './header'; // Import the 'header' variable
+
 import './database';
 import '../css/style.css';
 
